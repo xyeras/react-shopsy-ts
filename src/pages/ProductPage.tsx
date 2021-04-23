@@ -2,7 +2,7 @@ const ProductPage = () => {
     return (
         <div id="home">
             <div className="row text-center">
-                <div className="co">
+                <div className="col">
                     <h2>Product Page!</h2>
                 </div>
             </div>
