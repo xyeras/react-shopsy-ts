@@ -17,3 +17,10 @@ type Product = {
     description: string;
     image: string;
 }
+
+// Define a state type
+type InitialStateType = {
+    products: Product[];
+    cart: Product[];
+    getProducts: () => void;
+};
