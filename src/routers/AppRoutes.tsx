@@ -11,7 +11,7 @@ const AppRoutes = () => {
   return (
     <div>
       <Navbar />
-      <div className='container'>
+      <div className='container-fluid'>
         <Switch>
           <Route path='/' exact component={HomePage} />
           <Route path='/products/:productId' component={ProductPage} />
