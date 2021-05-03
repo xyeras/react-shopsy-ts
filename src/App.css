@@ -49,3 +49,10 @@
   cursor: pointer;
   box-shadow: 0 0.3rem 1.525rem -0.375rem rgb(0 0 0 / 10%)
 }
+
+.prod-img {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 400px;
+}

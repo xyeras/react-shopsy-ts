@@ -22,5 +22,7 @@ type Product = {
 type InitialStateType = {
     products: Product[];
     cart: Product[];
+    product: Product | undefined;
     getProducts: () => void;
+    getSingleProduct: (productId:number) => void;
 };
