@@ -6,9 +6,10 @@ const initialState = {
   products: [],
   cart: [],
   product: undefined,
+  is_loading: false,
   getProducts: () => {},
   getSingleProduct: () => {},
-  addToCart: () => {}
+  addToCart: () => {},
 };
 
 // Create our global reducer
@@ -18,23 +19,25 @@ const initialState = {
  - will receive an action declaration
  - will look to update our state based on the desired action
  - will return our updated state
- - our reducer takes two parameters
-  - first is our initialState so we can update it accordingly
-  - second param is action object that gets
-  - passed into dispatch({type:'some_action', payload: 'some data'})
+ - our reducer takes two parameters. 
+    - the first is our initialState so that we can update it accordingly
+    - the second param is the action object that gets 
+    - passed into dispatch({type:'some_action', payload:'some data'})
 */
 const appReducer = (state: any, action: any) => {
   //   debugger;
   switch (action.type) {
     case 'GET_PRODUCTS':
-      // when case matches, return will update state for us
+      // when a case matches, the return will update the state for us
       return { ...state, products: action.payload };
     case 'GET_SINGLE_PRODUCT':
-      // when case matches, bind payload to product property in state
-      return { ...state, product: action.payload };
+      // when case matches, bind the payload to the product property in state
+      return { ...state, product: action.payload, is_loading: false };
     case 'ADD_TO_CART':
       console.log('what is payload?', action.payload);
       return { ...state, cart: [...state.cart, action.payload] };
+    case 'SET_LOADING':
+      return { ...state, is_loading: action.payload };
     default:
       return state;
   }
@@ -49,21 +52,22 @@ export const GlobalProvider: React.FC = ({ children }) => {
   // update our state in our reducer function
   const [state, dispatch] = useReducer(appReducer, initialState);
 
+  // Actions = methods that run tasks for our app
   const getProducts = async () => {
     try {
       let { data } = await instance.get('/products');
-      // when case matches, rreturn will update state for us
       dispatch({ type: 'GET_PRODUCTS', payload: data });
     } catch (e) {
       console.log(e);
     }
   };
 
-  const getSingleProduct = async (productId:number) => {
+  const getSingleProduct = async (productId: number) => {
+    dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      let { data } = await instance.get(`/products/${productId}`)
+      let { data } = await instance.get(`/products/${productId}`);
       console.log(data);
-      dispatch({type: 'GET_SINGLE_PRODUCT', payload: data});
+      dispatch({ type: 'GET_SINGLE_PRODUCT', payload: data });
     } catch (e) {
       console.log(e);
     }
@@ -80,9 +84,10 @@ export const GlobalProvider: React.FC = ({ children }) => {
         products: state.products,
         cart: state.cart,
         product: state.product,
+        is_loading: state.is_loading,
         getProducts,
         getSingleProduct,
-        addToCart
+        addToCart,
       }}>
       {children} {/* <AppRouter/> */}
     </GlobalContext.Provider>
